@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <modules>
-        <module>bfxy-order</module>
-        <module>bfxy-store</module>
+        <module>rocket-order</module>
+        <module>rocket-store</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -13,9 +13,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.yangxin.rocketmq</groupId>
-    <artifactId>bfxy-master</artifactId>
+    <artifactId>rocket-master</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>bfxy-master</name>
+    <name>rocket-master</name>
+<!--    <name>bfxy-master</name>-->
     <packaging>pom</packaging>
     <description>Demo project for Spring Boot</description>
 
@@ -65,6 +66,14 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.16</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
