@@ -25,19 +25,28 @@ public class OrderController {
 //                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
 //            },
 //            fallbackMethod = "createOrderFallbackMethod4Timeout")
-    // 线程池限流降级
+    // 限流策略：线程池方式
+//    @HystrixCommand(
+//            commandKey = "createOrder",
+//            commandProperties = {
+//                    @HystrixProperty(name = "execution.isolation.strategy", value = "thread")
+//            },
+//            threadPoolKey = "createOrderThreadPool",
+//            threadPoolProperties = {
+//                    @HystrixProperty(name = "coreSize", value = "10"),
+//                    @HystrixProperty(name = "maxQueueSize", value = "20000"),
+//                    @HystrixProperty(name = "queueSizeRejectionThreshold", value = "30"),
+//            },
+//            fallbackMethod = "createOrderFallbackMethod4Thread"
+//    )
+    // 限流策略：信号量方式
     @HystrixCommand(
             commandKey = "createOrder",
             commandProperties = {
-                    @HystrixProperty(name = "execution.isolation.strategy", value = "thread")
+                    @HystrixProperty(name = "execution.isolation.strategy", value = "semaphore"),
+                    @HystrixProperty(name = "execution.isolation.semaphore.maxConcurrentRequests", value = "3")
             },
-            threadPoolKey = "createOrderThreadPool",
-            threadPoolProperties = {
-                    @HystrixProperty(name = "coreSize", value = "10"),
-                    @HystrixProperty(name = "maxQueueSize", value = "20000"),
-                    @HystrixProperty(name = "queueSizeRejectionThreshold", value = "30"),
-            },
-            fallbackMethod = "createOrderFallbackMethod4Thread"
+            fallbackMethod = "createOrderFallbackMethod4Semaphore"
     )
     @RequestMapping("/order/create")
     public String createOrder(@RequestParam("cityId") String cityId,
@@ -64,7 +73,7 @@ public class OrderController {
     }
 
     /**
-     * 线程池限流降级
+     * 限流策略：线程池方式
      */
     public String createOrderFallbackMethod4Thread(@RequestParam("cityId") String cityId,
                                                     @RequestParam("platformId") String platformId,
@@ -73,5 +82,17 @@ public class OrderController {
                                                     @RequestParam("goodIds") String goodIds) {
         log.info("线程池限流降级策略执行！");
         return "hystrix thread pool!";
+    }
+
+    /**
+     * 限流策略：信号量方式
+     */
+    public String createOrderFallbackMethod4Semaphore(@RequestParam("cityId") String cityId,
+                                                    @RequestParam("platformId") String platformId,
+                                                    @RequestParam("userId") String userId,
+                                                    @RequestParam("suppliedId") String suppliedId,
+                                                    @RequestParam("goodIds") String goodIds) {
+        log.info("信号量降级策略执行！");
+        return "hystrix semaphore!";
     }
 }
