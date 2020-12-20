@@ -18,12 +18,27 @@ import java.util.concurrent.TimeUnit;
 public class OrderController {
 
     // 超时降级
-    @HystrixCommand(commandKey = "createOrder",
+//    @HystrixCommand(
+//            commandKey = "createOrder",
+//            commandProperties = {
+//                    @HystrixProperty(name = "execution.timeout.enabled", value = "true"),
+//                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+//            },
+//            fallbackMethod = "createOrderFallbackMethod4Timeout")
+    // 线程池限流降级
+    @HystrixCommand(
+            commandKey = "createOrder",
             commandProperties = {
-                    @HystrixProperty(name = "execution.timeout.enabled", value = "true"),
-                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
+                    @HystrixProperty(name = "execution.isolation.strategy", value = "thread")
             },
-            fallbackMethod = "createOrderFallbackMethod4Timeout")
+            threadPoolKey = "createOrderThreadPool",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "10"),
+                    @HystrixProperty(name = "maxQueueSize", value = "20000"),
+                    @HystrixProperty(name = "queueSizeRejectionThreshold", value = "30"),
+            },
+            fallbackMethod = "createOrderFallbackMethod4Thread"
+    )
     @RequestMapping("/order/create")
     public String createOrder(@RequestParam("cityId") String cityId,
                               @RequestParam("platformId") String platformId,
@@ -36,12 +51,27 @@ public class OrderController {
         return "下单成功";
     }
 
+    /**
+     * 请求处理超时降级
+     */
     public String createOrderFallbackMethod4Timeout(@RequestParam("cityId") String cityId,
-                              @RequestParam("platformId") String platformId,
-                              @RequestParam("userId") String userId,
-                              @RequestParam("suppliedId") String suppliedId,
-                              @RequestParam("goodIds") String goodIds) {
+                                                    @RequestParam("platformId") String platformId,
+                                                    @RequestParam("userId") String userId,
+                                                    @RequestParam("suppliedId") String suppliedId,
+                                                    @RequestParam("goodIds") String goodIds) {
         log.info("超时降级策略执行！");
         return "hystrix timeout!";
+    }
+
+    /**
+     * 线程池限流降级
+     */
+    public String createOrderFallbackMethod4Thread(@RequestParam("cityId") String cityId,
+                                                    @RequestParam("platformId") String platformId,
+                                                    @RequestParam("userId") String userId,
+                                                    @RequestParam("suppliedId") String suppliedId,
+                                                    @RequestParam("goodIds") String goodIds) {
+        log.info("线程池限流降级策略执行！");
+        return "hystrix thread pool!";
     }
 }
