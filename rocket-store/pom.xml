@@ -59,10 +59,10 @@
             <artifactId>dubbo-spring-boot-actuator</artifactId>
             <version>${dubbo.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.rocket</groupId>-->
-<!--            <artifactId>bfxy-store-api</artifactId>-->
-<!--            <version>0.0.1-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.yangxin.rocketmq</groupId>
+            <artifactId>rocket-store-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

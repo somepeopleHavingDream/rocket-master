@@ -5,6 +5,7 @@
     <modules>
         <module>rocket-order</module>
         <module>rocket-store</module>
+        <module>rocket-store-api</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

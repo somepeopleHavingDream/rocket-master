@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>rocket-master</artifactId>
-<!--        <artifactId>bfxy-master</artifactId>-->
         <groupId>org.yangxin.rocketmq</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -50,21 +49,21 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <!-- dubbo -->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.boot</groupId>-->
-<!--            <artifactId>dubbo-spring-boot-starter</artifactId>-->
-<!--            <version>${dubbo.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.boot</groupId>-->
-<!--            <artifactId>dubbo-spring-boot-actuator</artifactId>-->
-<!--            <version>${dubbo.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.rocket</groupId>-->
-<!--            <artifactId>bfxy-store-api</artifactId>-->
-<!--            <version>0.0.1-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>dubbo-spring-boot-actuator</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yangxin.rocketmq</groupId>
+            <artifactId>rocket-store-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!-- hysrtix -->
         <dependency>
