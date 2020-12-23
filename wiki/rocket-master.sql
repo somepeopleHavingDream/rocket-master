@@ -36,3 +36,6 @@ create table t_store(
     update_by varchar(256) not null default '',
     update_time datetime not null default current_timestamp
 ) engine = InnoDB default charset = utf8mb4;
+
+insert into rocket_store.t_store(store_id, goods_id, supplier_id, goods_name, store_count, version, create_by, update_by)
+values ('001', '001', '001', 'Logitech', 10, 0, 'admin', 'admin');

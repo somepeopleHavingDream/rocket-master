@@ -15,7 +15,8 @@ import org.yangxin.store.service.api.HelloServiceAPI;
 @Slf4j
 public class HelloController {
 
-    @Reference(version = "1.0.0",
+    @Reference(
+            version = "1.0.0",
             application = "${dubbo.application.id}",
             interfaceName = "HelloServiceAPI",
             check = false,
