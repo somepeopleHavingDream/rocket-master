@@ -1,5 +1,9 @@
 package org.rocket.order.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +11,9 @@ import java.util.Date;
  * @author yangxin
  * 2020/12/17 19:04
  */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order implements Serializable {
 
     private static final long serialVersionUID = -1209546820744493185L;

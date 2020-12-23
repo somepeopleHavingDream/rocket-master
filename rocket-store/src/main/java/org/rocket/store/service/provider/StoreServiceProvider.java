@@ -16,7 +16,6 @@ import java.util.Date;
         application = "${dubbo.application.id}",
         protocol = "${dubbo.protocol.id}",
         registry = "${dubbo.registry.id}")
-//@org.springframework.stereotype.Service
 public class StoreServiceProvider implements StoreServiceAPI {
 
     @Autowired
