@@ -3,6 +3,7 @@ package org.rocket.order.web;
 import lombok.extern.slf4j.Slf4j;
 import org.rocket.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,7 +54,7 @@ public class OrderController {
 //            },
 //            fallbackMethod = "createOrderFallbackMethod4Semaphore"
 //    )
-//    @RequestMapping("/order/create")
+    @RequestMapping("/order/create")
     public String createOrder(@RequestParam("cityId") String cityId,
                               @RequestParam("platformId") String platformId,
                               @RequestParam("userId") String userId,
@@ -61,6 +62,13 @@ public class OrderController {
                               @RequestParam("goodIds") String goodIds) {
         // 当前线程休眠5秒，测试断路器
 //        TimeUnit.SECONDS.sleep(5);
+
+        log.info("cityId: [{}], platformId: [{}], userId: [{}], supplierId: [{}], goodIds: [{}]",
+                cityId,
+                platformId,
+                userId,
+                supplierId,
+                goodIds);
 
         return orderService.createOrder(cityId, platformId, userId, supplierId, goodIds) ? "下单成功！" : "下单失败！";
     }

@@ -17,6 +17,7 @@ import java.util.UUID;
  * @author yangxin
  * 12/23/20 4:44 PM
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Service
 @Slf4j
 public class OrderServiceImpl implements OrderService {
@@ -59,8 +60,8 @@ public class OrderServiceImpl implements OrderService {
                 .updateTime(currentTime)
                 .build();
 
-        // 当前版本即当前库存数
-        int currentVersion = storeServiceAPI.selectStoreCount(supplierId, goodIds);
+        // 当前版本
+        int currentVersion = storeServiceAPI.selectVersion(supplierId, goodIds);
         int updateReturnCount = storeServiceAPI.updateStoreCountByVersion(currentVersion,
                 supplierId,
                 goodIds,
@@ -86,6 +87,6 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
-        return false;
+        return flag;
     }
 }
