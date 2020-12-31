@@ -41,9 +41,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean createOrder(String cityId, String platformId, String userId, String supplierId, String goodIds) {
+        // 标记创建订单是否成功
         boolean flag = true;
-        Date currentTime = new Date();
 
+        // 创建订单
+        Date currentTime = new Date();
         Order order = Order.builder()
                 .orderId(UUID.randomUUID().toString())
                 .orderType("1")
@@ -60,8 +62,14 @@ public class OrderServiceImpl implements OrderService {
                 .updateTime(currentTime)
                 .build();
 
-        // 当前版本
+        // 当前版本，根据供应商Id和商品Id，获得当前商品记录的版本号，用于乐观锁操作
         int currentVersion = storeServiceAPI.selectVersion(supplierId, goodIds);
+        // 乐观锁机制，通过获取到的商品版本号对商品记录进行更新
+        /*
+         * 此项目中updateStoreCountByVersion的sql逻辑中有这样的一个判断ts.version = #{version,jdbcType=INTEGER}，
+         * 但其实在高并发的场景下，此处用户更新的订单的版本号可能会很快成为旧值，从而导致更新操作失败（即创建订单失败），这里其实是在这种机制下一个无法避免的性能瓶颈。
+         * 更好的处理方法是用缓存来解决，数据库只是起到一个记录的功能。
+         */
         int updateReturnCount = storeServiceAPI.updateStoreCountByVersion(currentVersion,
                 supplierId,
                 goodIds,
