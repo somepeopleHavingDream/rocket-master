@@ -54,12 +54,22 @@ public class PayServiceImpl implements PayService {
                 1. redis去重（分布式锁）
                 2. 数据库乐观锁去重
          */
+
+        /*
+            加锁开始（获取锁）
+         */
+
         CustomerAccount old = customerAccountMapper.selectByPrimaryKey(accountId);
         BigDecimal currentBalance = old.getCurrentBalance();
         Integer currentVersion = old.getVersion();
 
         // 做扣款操作的时候，获得分布式锁，看一下能否获得
         BigDecimal newBalance = currentBalance.subtract(payMoney);
+
+        /*
+            加锁结束（释放锁）
+         */
+
         if (newBalance.doubleValue() > 0) {
             /*
                  1. 组装消息
