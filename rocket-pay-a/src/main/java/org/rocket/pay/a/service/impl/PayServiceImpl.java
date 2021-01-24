@@ -1,5 +1,7 @@
 package org.rocket.pay.a.service.impl;
 
+import org.apache.rocketmq.client.producer.LocalTransactionState;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.client.producer.TransactionSendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.rocket.pay.a.entity.CustomerAccount;
@@ -15,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author yangxin
@@ -38,7 +41,7 @@ public class PayServiceImpl implements PayService {
 
     @Override
     public String payment(String userId, String orderId, String accountId, double money) {
-        String paymentReturned = "";
+        String paymentReturned;
 
         /*
             最开始有一步token验证操作（防止自己重复提单问题）
@@ -85,15 +88,33 @@ public class PayServiceImpl implements PayService {
             // 可能需要用到的参数
             paramMap.put("newBalance", newBalance);
             paramMap.put("currentVersion", currentVersion);
+            // 用于同步阻塞
+            CountDownLatch countDownLatch = new CountDownLatch(1);
+            paramMap.put("countDownLatch", countDownLatch);
+
 
             String json = FastJsonConvertUtil.convertObject2Json(paramMap);
             if (json == null) {
-                return null;
+                return "支付失败！";
             }
 
             Message message = new Message(TX_PAY_TOPIC, TX_PAY_TAG, key, json.getBytes(StandardCharsets.UTF_8));
             // 消息发送并且本地的事务执行
             TransactionSendResult sendResult = transactionProducer.sendMessage(message, paramMap);
+
+            try {
+                // 同步阻塞
+                countDownLatch.await();
+                if (sendResult.getSendStatus() == SendStatus.SEND_OK
+                        && sendResult.getLocalTransactionState() == LocalTransactionState.COMMIT_MESSAGE) {
+                    paymentReturned = "支付成功。";
+                } else {
+                    paymentReturned = "支付失败！";
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                paymentReturned = "支付失败！";
+            }
         } else {
             paymentReturned = "余额不足！";
         }

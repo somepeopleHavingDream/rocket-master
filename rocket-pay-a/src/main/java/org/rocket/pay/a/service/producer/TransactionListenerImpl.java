@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author yangxin
@@ -42,6 +43,7 @@ public class TransactionListenerImpl implements TransactionListener {
         // 前置扣款成功的余额
         BigDecimal newBalance = (BigDecimal) paramMap.get("newBalance");
         int currentVersion = (int) paramMap.get("currentVersion");
+        CountDownLatch countDownLatch = (CountDownLatch) paramMap.get("countDownLatch");
 
         // updateBalance传递当前的支付款，数据库操作
         Date currentTime = new Date();
@@ -52,6 +54,8 @@ public class TransactionListenerImpl implements TransactionListener {
         } catch (Exception e) {
             e.printStackTrace();
             return LocalTransactionState.ROLLBACK_MESSAGE;
+        } finally {
+            countDownLatch.countDown();
         }
     }
 
