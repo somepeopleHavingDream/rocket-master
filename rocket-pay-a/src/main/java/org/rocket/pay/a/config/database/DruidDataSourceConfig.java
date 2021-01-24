@@ -1,4 +1,4 @@
-package org.rocket.order.config.database;
+package org.rocket.pay.a.config.database;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
