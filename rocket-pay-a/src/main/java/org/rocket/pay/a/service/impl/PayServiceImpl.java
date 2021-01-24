@@ -40,14 +40,31 @@ public class PayServiceImpl implements PayService {
     public String payment(String userId, String orderId, String accountId, double money) {
         String paymentReturned = "";
 
+        /*
+            最开始有一步token验证操作（防止自己重复提单问题）
+         */
         BigDecimal payMoney = new BigDecimal(money);
 
+        /*
+            对大概率事件进行提前预判（小概率事件暂时放过，但最后保证数据一致性即可）
+
+            业务出发：
+                当前一个用户账号只允许一个线程（一个应用端访问）
+            技术出发：
+                1. redis去重（分布式锁）
+                2. 数据库乐观锁去重
+         */
         CustomerAccount old = customerAccountMapper.selectByPrimaryKey(accountId);
         BigDecimal currentBalance = old.getCurrentBalance();
         Integer currentVersion = old.getVersion();
+
+        // 做扣款操作的时候，获得分布式锁，看一下能否获得
         BigDecimal newBalance = currentBalance.subtract(payMoney);
         if (newBalance.doubleValue() > 0) {
-            // 1. 组装消息
+            /*
+                 1. 组装消息
+                 1. 执行本地事务
+            */
             String key = UUID.randomUUID().toString() + "$" + System.currentTimeMillis();
 
             Map<String, Object> paramMap = new HashMap<>(16);
@@ -67,9 +84,10 @@ public class PayServiceImpl implements PayService {
             Message message = new Message(TX_PAY_TOPIC, TX_PAY_TAG, key, json.getBytes(StandardCharsets.UTF_8));
             // 消息发送并且本地的事务执行
             TransactionSendResult sendResult = transactionProducer.sendMessage(message, paramMap);
-
-            // 1. 执行本地事务
+        } else {
+            paymentReturned = "余额不足！";
         }
+
         return paymentReturned;
     }
 }
