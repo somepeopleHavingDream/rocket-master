@@ -6,12 +6,13 @@
         <module>rocket-order</module>
         <module>rocket-store</module>
         <module>rocket-store-api</module>
+        <module>rocket-pay-a</module>
+        <module>rocket-pay-b</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.4.1</version>
-<!--        <version>2.3.2.RELEASE</version>-->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.yangxin.rocketmq</groupId>
