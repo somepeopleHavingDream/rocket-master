@@ -23,6 +23,7 @@ import java.util.concurrent.CountDownLatch;
  * @author yangxin
  * 1/24/21 4:04 PM
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Service
 public class PayServiceImpl implements PayService {
 
@@ -86,12 +87,12 @@ public class PayServiceImpl implements PayService {
             paramMap.put("accountId", accountId);
             paramMap.put("money", money);
             // 可能需要用到的参数
+            paramMap.put("payMoney", payMoney);
             paramMap.put("newBalance", newBalance);
             paramMap.put("currentVersion", currentVersion);
             // 用于同步阻塞
             CountDownLatch countDownLatch = new CountDownLatch(1);
             paramMap.put("countDownLatch", countDownLatch);
-
 
             String json = FastJsonConvertUtil.convertObject2Json(paramMap);
             if (json == null) {

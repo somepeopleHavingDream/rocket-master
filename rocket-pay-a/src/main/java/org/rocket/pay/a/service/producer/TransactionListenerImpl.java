@@ -18,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
  * @author yangxin
  * 1/24/21 5:08 PM
  */
-@SuppressWarnings({"unchecked", "unused"})
+@SuppressWarnings({"SpringJavaInjectionPointsAutowiringInspection", "unchecked", "unused"})
 @Component
 @Slf4j
 public class TransactionListenerImpl implements TransactionListener {
@@ -27,6 +27,7 @@ public class TransactionListenerImpl implements TransactionListener {
 
     @Autowired
     public TransactionListenerImpl(CustomerAccountMapper customerAccountMapper) {
+        log.info("TransactionListenerImpl initialize.");
         this.customerAccountMapper = customerAccountMapper;
     }
 
@@ -39,7 +40,7 @@ public class TransactionListenerImpl implements TransactionListener {
         String accountId = (String) paramMap.get("accountId");
         String orderId = (String) paramMap.get("orderId");
         // 当前的支付款
-        BigDecimal money = (BigDecimal) paramMap.get("money");
+        BigDecimal payMoney = (BigDecimal) paramMap.get("payMoney");
         // 前置扣款成功的余额
         BigDecimal newBalance = (BigDecimal) paramMap.get("newBalance");
         int currentVersion = (int) paramMap.get("currentVersion");

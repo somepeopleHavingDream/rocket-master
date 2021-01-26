@@ -23,14 +23,13 @@ import java.util.Map;
  * @author yangxin
  * 1/24/21 9:40 PM
  */
-@SuppressWarnings({"SpringJavaAutowiredFieldsWarningInspection", "SpellCheckingInspection"})
+@SuppressWarnings({"SpringJavaAutowiredFieldsWarningInspection", "SpellCheckingInspection", "SpringJavaInjectionPointsAutowiringInspection"})
 @Component
 @Slf4j
 public class PayConsumer {
 
-    private DefaultMQPushConsumer consumer;
-
-    private static final String NAMESRV_ADDR_SINGLE = "192.168.3.3:9876";
+    private static final String NAMESRV_ADDR_SINGLE = "192.168.3.2:9876";
+//    private static final String NAMESRV_ADDR_SINGLE = "192.168.3.3:9876";
 
     private static final String CONSUMER_GROUP_NAME = "tx_pay_consumer_group_name";
 
@@ -41,7 +40,7 @@ public class PayConsumer {
     private PlatformAccountMapper platformAccountMapper;
 
     private PayConsumer() {
-        consumer = new DefaultMQPushConsumer(CONSUMER_GROUP_NAME);
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(CONSUMER_GROUP_NAME);
         consumer.setConsumeThreadMin(10);
         consumer.setConsumeThreadMin(30);
         consumer.setNamesrvAddr(NAMESRV_ADDR_SINGLE);
@@ -55,7 +54,7 @@ public class PayConsumer {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "unused"})
     private class MessageListenerConcurrently4Pay implements MessageListenerConcurrently {
 
         @Override

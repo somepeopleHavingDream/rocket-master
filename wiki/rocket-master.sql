@@ -21,6 +21,9 @@ create table t_order
 ) engine = InnoDB
   default charset = utf8mb4;
 
+insert into rocket_order.t_order(order_id, order_type, city_id, platform_id, user_id, supplier_id, goods_id, order_status, remark, create_by)
+values ('33bfffaa-65e7-45d9-9a40-e349983e', '1', '1001', '001', '001', '1', '001', '1', '', 'admin');
+
 drop database if exists rocket_store;
 create database rocket_store character set utf8mb4;
 
