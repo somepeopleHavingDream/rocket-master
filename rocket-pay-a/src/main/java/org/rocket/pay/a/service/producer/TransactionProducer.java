@@ -23,9 +23,10 @@ public class TransactionProducer implements InitializingBean {
     @Autowired
     private TransactionListenerImpl transactionListener;
 
-    private static final String NAMESRV_ADDR_SINGLE = "192.168.3.3:9876";
+    private static final String NAMESRV_ADDR_SINGLE = "192.168.3.2:9876";
+//    private static final String NAMESRV_ADDR_SINGLE = "192.168.3.3:9876";
 
-    private static final String PRODUCER_GROUP_NAME = "tx_pay_producer_name";
+    private static final String PRODUCER_GROUP_NAME = "tx_pay_producer_group_name";
 
     private TransactionProducer() {
         this.producer = new TransactionMQProducer(PRODUCER_GROUP_NAME);
