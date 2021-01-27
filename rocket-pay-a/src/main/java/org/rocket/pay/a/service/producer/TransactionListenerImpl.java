@@ -47,10 +47,10 @@ public class TransactionListenerImpl implements TransactionListener {
         CountDownLatch countDownLatch = (CountDownLatch) paramMap.get("countDownLatch");
 
         // updateBalance传递当前的支付款，数据库操作
-        Date currentTime = new Date();
+//        Date currentTime = new Date();
 
         try {
-            int count = customerAccountMapper.updateBalance(accountId, newBalance, currentVersion, currentTime);
+            int count = customerAccountMapper.updateBalance(accountId, newBalance, currentVersion);
             return count == 1 ? LocalTransactionState.COMMIT_MESSAGE : LocalTransactionState.UNKNOW;
         } catch (Exception e) {
             e.printStackTrace();

@@ -7,6 +7,7 @@ import org.apache.rocketmq.common.message.Message;
 import org.rocket.pay.a.entity.CustomerAccount;
 import org.rocket.pay.a.mapper.CustomerAccountMapper;
 import org.rocket.pay.a.service.PayService;
+import org.rocket.pay.a.service.producer.CallbackService;
 import org.rocket.pay.a.service.producer.TransactionProducer;
 import org.rocket.pay.a.util.FastJsonConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +29,17 @@ import java.util.concurrent.CountDownLatch;
 public class PayServiceImpl implements PayService {
 
     private final CustomerAccountMapper customerAccountMapper;
-
     private final TransactionProducer transactionProducer;
+    private final CallbackService callbackService;
 
     public static final String TX_PAY_TOPIC = "tx_pay_topic";
-    public static final String TX_PAY_TAG = "pay";
+    public static final String TX_PAY_TAGS = "pay";
 
     @Autowired
-    public PayServiceImpl(CustomerAccountMapper customerAccountMapper, TransactionProducer transactionProducer) {
+    public PayServiceImpl(CustomerAccountMapper customerAccountMapper, TransactionProducer transactionProducer, CallbackService callbackService) {
         this.customerAccountMapper = customerAccountMapper;
         this.transactionProducer = transactionProducer;
+        this.callbackService = callbackService;
     }
 
     @Override
@@ -99,7 +101,7 @@ public class PayServiceImpl implements PayService {
                 return "支付失败！";
             }
 
-            Message message = new Message(TX_PAY_TOPIC, TX_PAY_TAG, key, json.getBytes(StandardCharsets.UTF_8));
+            Message message = new Message(TX_PAY_TOPIC, TX_PAY_TAGS, key, json.getBytes(StandardCharsets.UTF_8));
             // 消息发送并且本地的事务执行
             TransactionSendResult sendResult = transactionProducer.sendMessage(message, paramMap);
 
@@ -108,6 +110,8 @@ public class PayServiceImpl implements PayService {
                 countDownLatch.await();
                 if (sendResult.getSendStatus() == SendStatus.SEND_OK
                         && sendResult.getLocalTransactionState() == LocalTransactionState.COMMIT_MESSAGE) {
+                    // 回调订单,通知支付成功消息
+                    callbackService.sendOkMessage(orderId, userId);
                     paymentReturned = "支付成功。";
                 } else {
                     paymentReturned = "支付失败！";

@@ -17,7 +17,7 @@ create table t_order
     create_by    varchar(256) not null default '',
     create_time  datetime     not null default current_timestamp,
     update_by    varchar(256) not null default '',
-    update_time  datetime     not null default current_timestamp
+    update_time  datetime     not null default current_timestamp on update current_timestamp
 ) engine = InnoDB
   default charset = utf8mb4;
 
@@ -40,7 +40,7 @@ create table t_store
     create_by   varchar(256) not null default '',
     create_time datetime     not null default current_timestamp,
     update_by   varchar(256) not null default '',
-    update_time datetime     not null default current_timestamp
+    update_time datetime     not null default current_timestamp on update current_timestamp
 ) engine = InnoDB
   default charset = utf8mb4;
 
@@ -61,7 +61,7 @@ create table t_customer_account
     current_balance decimal not null default 0,
     version int not null default 0,
     create_time datetime     not null default current_timestamp,
-    update_time datetime     not null default current_timestamp
+    update_time datetime     not null default current_timestamp on update current_timestamp
 ) engine = InnoDB
   default charset = utf8mb4;
 
@@ -81,9 +81,12 @@ create table t_platform_account
     current_balance decimal not null default 0,
     version int not null default 0,
     create_time datetime     not null default current_timestamp,
-    update_time datetime     not null default current_timestamp
+    update_time datetime     not null default current_timestamp on update current_timestamp
 ) engine = InnoDB
   default charset = utf8mb4;
 
 insert into t_platform_account(account_id, account_no, current_balance, version)
 values ('platform001', '654321', 1000, 0);
+
+drop database if exists rocket_pkg;
+create database rocket_pkg character set utf8mb4;
