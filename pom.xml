@@ -8,6 +8,7 @@
         <module>rocket-store-api</module>
         <module>rocket-pay-a</module>
         <module>rocket-pay-b</module>
+        <module>rocket-pkg</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -80,14 +81,14 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
 <!--                <version>2.4.2</version>-->
-            </plugin>
-        </plugins>
-    </build>
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>

@@ -20,7 +20,7 @@ import java.util.UUID;
 public class CallbackService {
 
     public static final String CALLBACK_PAY_TOPIC = "callback_pay_topic";
-    public static final String CALLBACK_PAY_TAG = "callback_pay";
+    public static final String CALLBACK_PAY_TAGS = "callback_pay";
     private static final String NAMESRV_ADDR_SINGLE = "192.168.3.2:9876";
 
     private final SyncProducer syncProducer;
@@ -43,7 +43,7 @@ public class CallbackService {
         }
 
         String key = UUID.randomUUID().toString() + "$" + System.currentTimeMillis();
-        Message message = new Message(CALLBACK_PAY_TOPIC, CALLBACK_PAY_TAG, key, json.getBytes(StandardCharsets.UTF_8));
+        Message message = new Message(CALLBACK_PAY_TOPIC, CALLBACK_PAY_TAGS, key, json.getBytes(StandardCharsets.UTF_8));
 
         SendResult sendResult = syncProducer.sendMessage(message);
     }

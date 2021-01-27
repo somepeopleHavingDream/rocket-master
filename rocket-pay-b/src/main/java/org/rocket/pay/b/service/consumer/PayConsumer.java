@@ -34,7 +34,7 @@ public class PayConsumer {
     private static final String CONSUMER_GROUP_NAME = "tx_pay_consumer_group_name";
 
     public static final String TX_PAY_TOPIC = "tx_pay_topic";
-    public static final String TX_PAY_TAG = "pay";
+    public static final String TX_PAY_TAGS = "pay";
 
     @Autowired
     private PlatformAccountMapper platformAccountMapper;
@@ -42,11 +42,11 @@ public class PayConsumer {
     private PayConsumer() {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(CONSUMER_GROUP_NAME);
         consumer.setConsumeThreadMin(10);
-        consumer.setConsumeThreadMin(30);
+        consumer.setConsumeThreadMax(30);
         consumer.setNamesrvAddr(NAMESRV_ADDR_SINGLE);
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
         try {
-            consumer.subscribe(TX_PAY_TOPIC, TX_PAY_TAG);
+            consumer.subscribe(TX_PAY_TOPIC, TX_PAY_TAGS);
             consumer.registerMessageListener(new MessageListenerConcurrently4Pay());
             consumer.start();
         } catch (MQClientException e) {
@@ -85,12 +85,10 @@ public class PayConsumer {
 
                 PlatformAccount platformAccount = platformAccountMapper.selectByPrimaryKey("platform001");
                 platformAccount.setCurrentBalance(platformAccount.getCurrentBalance().add(money));
-                Date currentTime = new Date();
+//                Date currentTime = new Date();
                 platformAccount.setVersion(platformAccount.getVersion() + 1);
-                platformAccount.setDateTime(currentTime);
-                platformAccount.setUpdateTime(currentTime);
                 platformAccountMapper.updateByPrimaryKeySelective(platformAccount);
-            } catch (UnsupportedEncodingException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
 
                 int reconsumeTimes = messageExt.getReconsumeTimes();

@@ -33,7 +33,7 @@ public class PayServiceImpl implements PayService {
     private final CallbackService callbackService;
 
     public static final String TX_PAY_TOPIC = "tx_pay_topic";
-    public static final String TX_PAY_TAG = "pay";
+    public static final String TX_PAY_TAGS = "pay";
 
     @Autowired
     public PayServiceImpl(CustomerAccountMapper customerAccountMapper, TransactionProducer transactionProducer, CallbackService callbackService) {
@@ -101,7 +101,7 @@ public class PayServiceImpl implements PayService {
                 return "支付失败！";
             }
 
-            Message message = new Message(TX_PAY_TOPIC, TX_PAY_TAG, key, json.getBytes(StandardCharsets.UTF_8));
+            Message message = new Message(TX_PAY_TOPIC, TX_PAY_TAGS, key, json.getBytes(StandardCharsets.UTF_8));
             // 消息发送并且本地的事务执行
             TransactionSendResult sendResult = transactionProducer.sendMessage(message, paramMap);
 

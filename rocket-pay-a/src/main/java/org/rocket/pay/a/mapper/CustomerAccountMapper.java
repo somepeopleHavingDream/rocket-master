@@ -27,6 +27,9 @@ public interface CustomerAccountMapper {
 
     int updateBalance(@Param("accountId") String accountId,
                       @Param("newBalance") BigDecimal newBalance,
-                      @Param("version") int currentVersion,
-                      @Param("updateTime") Date currentTime);
+                      @Param("version") int currentVersion);
+//    int updateBalance(@Param("accountId") String accountId,
+//                      @Param("newBalance") BigDecimal newBalance,
+//                      @Param("version") int currentVersion,
+//                      @Param("updateTime") Date currentTime);
 }

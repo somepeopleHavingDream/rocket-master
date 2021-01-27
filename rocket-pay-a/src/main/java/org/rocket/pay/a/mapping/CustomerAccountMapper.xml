@@ -118,9 +118,8 @@
   <update id="updateBalance">
     update t_customer_account
     		set current_balance = #{newBalance,jdbcType=DECIMAL},
-      			version = version + 1,
-      			update_time = #{updateTime,jdbcType=TIMESTAMP}
-    		where account_id = #{accountId,jdbcType=VARCHAR} 
+      			version = version + 1
+    		where account_id = #{accountId,jdbcType=VARCHAR}
           		  and
           		  version =  #{version,jdbcType=INTEGER}
   </update>
