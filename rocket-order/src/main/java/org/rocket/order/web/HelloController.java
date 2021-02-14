@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.yangxin.store.service.api.HelloServiceAPI;
+import org.yangxin.store.service.api.HelloServiceApi;
 
 /**
  * @author yangxin
@@ -23,7 +23,7 @@ public class HelloController {
             timeout = 3000
             // 读请求允许重试3次，写请求不进行重试（如果没做幂等处理）
     )
-    private HelloServiceAPI helloServiceAPI;
+    private HelloServiceApi helloServiceAPI;
 
     @RequestMapping("/hello")
     public String hello(@RequestParam("name") String name) {

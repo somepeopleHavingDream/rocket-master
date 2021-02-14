@@ -2,7 +2,7 @@ package org.rocket.store.service.provider;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import lombok.extern.slf4j.Slf4j;
-import org.yangxin.store.service.api.HelloServiceAPI;
+import org.yangxin.store.service.api.HelloServiceApi;
 
 /**
  * @author yangxin
@@ -13,7 +13,7 @@ import org.yangxin.store.service.api.HelloServiceAPI;
         protocol = "${dubbo.protocol.id}",
         registry = "${dubbo.registry.id}")
 @Slf4j
-public class HelloServiceProvider implements HelloServiceAPI {
+public class HelloServiceProvider implements HelloServiceApi {
 
     @Override
     public String sayHello(String name) {

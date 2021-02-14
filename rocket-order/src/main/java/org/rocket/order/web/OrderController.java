@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author yangxin
  * 2020/12/20 19:56
  */
+@SuppressWarnings({"AlibabaCommentsMustBeJavadocFormat", "AlibabaRemoveCommentedCode"})
 @RestController
 @Slf4j
 public class OrderController {
