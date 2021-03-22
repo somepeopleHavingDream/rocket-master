@@ -3,7 +3,7 @@ package org.rocket.store.service.provider;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.rocket.store.mapper.StoreMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yangxin.store.service.api.StoreServiceAPI;
+import org.yangxin.store.service.api.StoreServiceApi;
 
 import java.util.Date;
 
@@ -16,7 +16,7 @@ import java.util.Date;
         application = "${dubbo.application.id}",
         protocol = "${dubbo.protocol.id}",
         registry = "${dubbo.registry.id}")
-public class StoreServiceProvider implements StoreServiceAPI {
+public class StoreServiceProvider implements StoreServiceApi {
 
     @Autowired
     private StoreMapper storeMapper;

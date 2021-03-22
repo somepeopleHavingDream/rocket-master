@@ -11,7 +11,7 @@ import org.rocket.order.service.producer.OrderlyProducer;
 import org.rocket.order.util.FastJsonConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yangxin.store.service.api.StoreServiceAPI;
+import org.yangxin.store.service.api.StoreServiceApi;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
             timeout = 1000
             // 读请求允许重试3次，写请求不进行重试（如果没做幂等处理）
     )
-    private StoreServiceAPI storeServiceApi;
+    private StoreServiceApi storeServiceApi;
 
     @Autowired
     public OrderServiceImpl(OrderMapper orderMapper, OrderlyProducer orderlyProducer) {
