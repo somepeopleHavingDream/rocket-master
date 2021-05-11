@@ -23,26 +23,24 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class PkgOrderlyConsumer {
 
-    private DefaultMQPushConsumer consumer;
-
     public static final String PKG_TOPIC = "pkg_topic";
     public static final String PKG_TAGS = "pkg";
     private static final String NAMESRV_ADDR_SINGLE = "192.168.3.2:9876";
     public static final String CONSUMER_GROUP_NAME = "orderly_consumer_group_name";
 
     private PkgOrderlyConsumer() throws MQClientException {
-        this.consumer = new DefaultMQPushConsumer(CONSUMER_GROUP_NAME);
-        this.consumer.setConsumeThreadMin(10);
-        this.consumer.setConsumeThreadMax(30);
-        this.consumer.setNamesrvAddr(NAMESRV_ADDR_SINGLE);
-        this.consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
-        this.consumer.subscribe(PKG_TOPIC, PKG_TAGS);
-        this.consumer.setMessageListener(new PkgOrderlyListener());
-        this.consumer.start();
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(CONSUMER_GROUP_NAME);
+        consumer.setConsumeThreadMin(10);
+        consumer.setConsumeThreadMax(30);
+        consumer.setNamesrvAddr(NAMESRV_ADDR_SINGLE);
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
+        consumer.subscribe(PKG_TOPIC, PKG_TAGS);
+        consumer.setMessageListener(new PkgOrderlyListener());
+        consumer.start();
     }
 
     @SuppressWarnings("unchecked")
-    private class PkgOrderlyListener implements MessageListenerOrderly {
+    private static class PkgOrderlyListener implements MessageListenerOrderly {
 
         private final Random random = new Random();
 
