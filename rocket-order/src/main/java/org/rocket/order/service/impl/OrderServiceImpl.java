@@ -71,10 +71,12 @@ public class OrderServiceImpl implements OrderService {
         // 当前版本
         // 当前版本，根据供应商Id和商品Id，获得当前商品记录的版本号，用于乐观锁操作
         int currentVersion = storeServiceApi.selectVersion(supplierId, goodIds);
+
         /*
          * 此项目中updateStoreCountByVersion的sql逻辑中有这样的一个判断ts.version = #{version,jdbcType=INTEGER}，
-         * 但其实在高并发的场景下，此处用户更新的订单的版本号可能会很快成为旧值，从而导致更新操作失败（即创建订单失败），这里其实是在这种机制下一个无法避免的性能瓶颈。
-         * 更好的处理方法是用缓存来解决，数据库只是起到一个记录的功能。
+         * 但其实在高并发的场景下，此处用户更新的订单的版本号可能会很快成为旧值，从而导致更新操作失败（即创建订单失败），
+         * 这里其实是在这种机制下一个无法避免的性能瓶颈。
+         * 更好的处理方法是用缓存来解决，数据库只是起到一个记录的作用。
          */
         int updateReturnCount = storeServiceApi.updateStoreCountByVersion(currentVersion,
                 supplierId,
@@ -130,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
             return null;
         }
 
-        String key = UUID.randomUUID().toString() + "$" + System.currentTimeMillis();
+        String key = UUID.randomUUID() + "$" + System.currentTimeMillis();
         return new Message(PKG_TOPIC, PKG_TAGS, key, json.getBytes(StandardCharsets.UTF_8));
     }
 

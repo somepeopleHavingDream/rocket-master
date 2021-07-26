@@ -23,11 +23,11 @@ public class HelloController {
             timeout = 3000
             // 读请求允许重试3次，写请求不进行重试（如果没做幂等处理）
     )
-    private HelloServiceApi helloServiceAPI;
+    private HelloServiceApi helloServiceApi;
 
     @RequestMapping("/hello")
     public String hello(@RequestParam("name") String name) {
         log.info("name: [{}]", name);
-        return helloServiceAPI.sayHello(name);
+        return helloServiceApi.sayHello(name);
     }
 }

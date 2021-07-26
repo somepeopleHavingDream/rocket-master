@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(basePackages = {"org.rocket.order.*"})
-//@MapperScan(basePackages = "org.rocket.order.mapping")
 @MapperScan(basePackages = "org.rocket.order.mapper")
 public class MainConfig {
 }
