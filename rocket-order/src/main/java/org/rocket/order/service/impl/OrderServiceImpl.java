@@ -20,7 +20,6 @@ import java.util.*;
  * @author yangxin
  * 12/23/20 4:44 PM
  */
-@SuppressWarnings({"SpringJavaInjectionPointsAutowiringInspection", "SpellCheckingInspection"})
 @Service
 @Slf4j
 public class OrderServiceImpl implements OrderService {
